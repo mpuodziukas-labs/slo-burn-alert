@@ -1,0 +1,24 @@
+== healthy.csv (expect OK) -> as expected
+log: rows=2161 span=21600s window=30d (budget projected from the log's own request rate)
+availability: sli=99.907% target=99.9% budget_left=99.2%
+  burn 1h=0.00 5m=0.00 | 6h=0.93 30m=0.00 -> OK
+latency: sli=99.769% target=99.0% budget_left=99.8%
+  burn 1h=0.28 5m=0.00 | 6h=0.23 30m=0.56 -> OK
+VERDICT OK
+== slow_burn.csv (expect TICKET) -> as expected
+log: rows=2161 span=21600s window=30d (budget projected from the log's own request rate)
+availability: sli=99.167% target=99.9% budget_left=93.1%
+  burn 1h=8.33 5m=0.00 | 6h=7.87 30m=11.11 -> TICKET
+latency: sli=99.769% target=99.0% budget_left=99.8%
+  burn 1h=0.28 5m=0.00 | 6h=0.23 30m=0.56 -> OK
+VERDICT TICKET
+== fast_burn.csv (expect PAGE) -> as expected
+log: rows=2161 span=21600s window=30d (budget projected from the log's own request rate)
+availability: sli=99.167% target=99.9% budget_left=93.1%
+  burn 1h=50.00 5m=66.67 | 6h=8.33 30m=50.00 -> PAGE
+latency: sli=99.769% target=99.0% budget_left=99.8%
+  burn 1h=0.28 5m=0.00 | 6h=0.23 30m=0.56 -> OK
+VERDICT PAGE
+== empty log: rejected with cause 'no data rows after the header' -> as expected
+wrote alerts.rules.yml with 4 alert rules
+slo-burn-alert RESULT 4/4
